@@ -13,7 +13,7 @@ $photo.addEventListener('input', function (event) {
 var $title = document.getElementById('title');
 var $notes = document.getElementById('notes');
 
-$formdata.addEventListener('submit', function (event) {
+$formdata.addEventListener('submit', function inputdata(event) {
   event.preventDefault();
   var inputobj = {};
   inputobj.title = $title.value;
@@ -21,7 +21,91 @@ $formdata.addEventListener('submit', function (event) {
   inputobj.photo = $photo.value;
   inputobj.entryID = data.nextEntryId;
   data.nextEntryId++;
-  data.entries.push(inputobj);
+  data.entries.unshift(inputobj);
   $img.setAttribute('src', './images/placeholder-image-square.jpg');
   $formdata.reset();
+  var renderList = renderEntry(inputobj);
+  listAll.prepend(renderList);
+  entryView();
 });
+
+function renderEntry(entryvalue) {
+  var list = document.createElement('li');
+  var rowList = document.createElement('div');
+  rowList.setAttribute('class', 'row');
+
+  var columnHalf = document.createElement('div');
+  columnHalf.setAttribute('class', 'column-half');
+  var image = document.createElement('img');
+  image.setAttribute('class', 'imageUpload');
+  image.src = entryvalue.photo;
+  list.appendChild(rowList);
+  rowList.appendChild(columnHalf);
+  columnHalf.appendChild(image);
+
+  var columnHalfTwo = document.createElement('div');
+  columnHalfTwo.setAttribute('class', 'column-half');
+  var innerRow = document.createElement('div');
+  innerRow.setAttribute('class', 'inner-row');
+  var hFour = document.createElement('h4');
+  hFour.textContent = entryvalue.title;
+  var pOne = document.createElement('p');
+  pOne.textContent = entryvalue.notes;
+  rowList.appendChild(columnHalfTwo);
+  columnHalfTwo.appendChild(innerRow);
+  innerRow.appendChild(hFour);
+  innerRow.appendChild(pOne);
+  return list;
+}
+
+var listAll = document.getElementsByTagName('ul')[0];
+
+function showEntry() {
+  for (var i = 0; i < data.entries.length; i++) {
+    var renderList = renderEntry(data.entries[i]);
+    listAll.appendChild(renderList);
+  }
+  return listAll;
+}
+
+document.addEventListener('DOMContentLoaded', showEntry);
+
+var $nav = document.getElementsByClassName('subnav')[0];
+var $entryEmpty = document.querySelector('[data-view="entry-empty"]');
+var $entryHistory = document.querySelector('[data-view="entry-history"]');
+var $entryForm = document.querySelector('[data-view="entry-form"]');
+var $entries = document.querySelector('[data-view="entries"]');
+var $newbtn = document.getElementsByClassName('newbtn')[0];
+
+function entryView() {
+  data.view = 'entries';
+  $entryForm.className = 'container hidden';
+  $entries.className = 'container';
+  if (data.entries.length !== 0) {
+    $entryHistory.className = 'column-full';
+    $entryEmpty.className = 'column-full hidden';
+  } else {
+    $entryEmpty.className = 'column-full';
+    $entryHistory.className = 'column-full hidden';
+  }
+}
+
+$nav.addEventListener('click', entryView);
+
+$newbtn.addEventListener('click', function () {
+  data.view = 'entry-form';
+  $entryForm.className = 'container';
+  $entries.className = 'container hidden';
+});
+
+if (data.view === 'entries') {
+  $entryForm.className = 'container hidden';
+  $entries.className = 'container';
+  if (data.entries.length !== 0) {
+    $entryHistory.className = 'column-full';
+    $entryEmpty.className = 'column-full hidden';
+  } else {
+    $entryEmpty.className = 'column-full';
+    $entryHistory.className = 'column-full hidden';
+  }
+}

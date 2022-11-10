@@ -3,10 +3,35 @@ body {
   background-color: rgb(237, 237, 237);
 }
 
+header {
+  background-color: rgb(110, 0, 149);
+  height: 3.2rem;
+}
+
 .hidden {
   display: none !important;
 }
 
+.nav {
+  display: flex;
+  align-items: baseline;
+  margin-top: 0.7rem;
+}
+
+.nav h2 {
+  color: white;
+  margin: 0;
+  font-weight: lighter;
+}
+
+.nav > a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  margin-left: 1rem;
+}
+
+.nav-container,
 .container {
   max-width: 575px;
   margin: 0 auto;
@@ -23,6 +48,10 @@ body {
   width: 100%;
 }
 
+h1 {
+  margin: 1rem 0;
+}
+
 label,
 input,
 textarea,
@@ -34,10 +63,6 @@ img {
   height: 240px;
   object-fit: cover;
   margin-bottom: 1rem;
-}
-
-h1 {
-  margin: 1rem 0;
 }
 
 input,
@@ -71,22 +96,47 @@ label {
   height: 2rem;
 }
 
-header:first-child {
-  background-color: rgb(110, 0, 149);
-}
-
-p {
-  color: white;
-  font-size: 1.2rem;
-  margin: 0;
-  padding: 1rem 0;
-}
-
 .inner-row {
   margin-bottom: 2rem;
 }
 
+h4,
+p {
+  width: 100%;
+}
+
+[data-view="entries"].container p {
+  color: black;
+}
+
+[data-view="entries"].container > .row .column-half {
+  width: 50%;
+}
+
+[data-view="entries"].container .column-full > p {
+  text-align: center;
+}
+
+.container .newbtn a {
+  color: white;
+  background-color: rgb(110, 0, 149);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  display: block;
+  border-radius: 4px;
+  margin-top: 1rem;
+  float: right;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 @media screen and (min-width: 768px) {
+  .nav-container,
   .container {
     max-width: 900px;
   }
@@ -97,12 +147,15 @@ p {
   }
 
   .inner-row {
-    padding-left: 0.5rem;
+    padding-left: 0.8rem;
   }
 
   img {
-    padding-right: 0.5rem;
-    width: 100%;
+    padding-right: 0.8rem;
     height: 100%;
+  }
+
+  li {
+    margin-bottom: 1rem;
   }
 }
