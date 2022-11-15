@@ -17,10 +17,13 @@
 </head>
 <body>
   <header>
-    <div class="container">
+    <div class="nav-container">
       <div class="row">
-        <div class="column-full">
-          <p>Code Journal</p>
+        <div class="column-half">
+          <div class="nav">
+            <h2>Code Journal</h2>
+            <a class="subnav" href="#" data-view="entries-btn">Entries</a>
+          </div>
         </div>
       </div>
     </div>
@@ -54,6 +57,28 @@
           </div>
         </div>
       </form>
+    </div>
+
+    <div class="container hidden" data-view="entries">
+      <div class="row">
+        <div class="column-half">
+          <h1>Entries</h1>
+        </div>
+        <div class="column-half">
+          <div class="newbtn">
+            <a href="#">NEW</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column-full" data-view="entry-empty">
+        <p>No entries have been recorded.</p>
+      </div>
+
+      <div class="column-full" data-view="entry-history">
+        <ul>
+        </ul>
+      </div>
     </div>
   </main>
   <script src="js/data.js"></script>
