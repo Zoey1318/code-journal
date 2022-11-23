@@ -12,8 +12,9 @@ $photo.addEventListener('input', function imagentry(event) {
 
 var $title = document.getElementById('title');
 var $notes = document.getElementById('notes');
+var listChild = document.getElementsByTagName('li');
 
-$formdata.addEventListener('submit', function inputdata(event) {
+$formdata.addEventListener('submit', function (event) {
   event.preventDefault();
   var inputobj = {};
   inputobj.title = $title.value;
@@ -22,23 +23,23 @@ $formdata.addEventListener('submit', function inputdata(event) {
   inputobj.entryID = data.nextEntryId;
   var renderList = renderEntry(inputobj);
   if (data.view === 'entry-edit') {
-    data.entries.splice(data.entries.entryID, 1, inputobj);
-    listAll.replaceWith(renderList);
-
+    inputobj.entryID = data.editing.entryID;
+    data.entries[data.entries.length - data.editing.entryID] = inputobj;
+    listChild[data.entries.length - data.editing.entryID].replaceWith(renderList);
   } else {
     data.nextEntryId++;
     data.entries.unshift(inputobj);
     listAll.prepend(renderList);
-
   }
   $img.setAttribute('src', './images/placeholder-image-square.jpg');
-  $formdata.reset();
   entryView();
+  $formdata.reset();
 });
 
 function renderEntry(entryvalue) {
   var list = document.createElement('li');
-  list.setAttribute('id', entryvalue.title);
+  list.setAttribute('entryid', entryvalue.entryID);
+
   var rowList = document.createElement('div');
   rowList.setAttribute('class', 'row');
 
@@ -62,7 +63,8 @@ function renderEntry(entryvalue) {
   var pOne = document.createElement('p');
   pOne.textContent = entryvalue.notes;
   var editIcon = document.createElement('i');
-  editIcon.setAttribute('class', 'fa-solid fa-pen');
+  editIcon.setAttribute('class', 'fa-solid fa-pen edit-entry');
+  editIcon.setAttribute('data-id', entryvalue.entryID);
   rowList.appendChild(columnHalfTwo);
   columnHalfTwo.appendChild(innerRow);
   innerRow.appendChild(columnFull);
@@ -102,6 +104,8 @@ function entryView() {
     $entryEmpty.className = 'column-full';
     $entryHistory.className = 'column-full hidden';
   }
+  $img.setAttribute('src', './images/placeholder-image-square.jpg');
+  $formdata.reset();
 }
 
 $nav.addEventListener('click', entryView);
@@ -126,21 +130,17 @@ if (data.view === 'entries') {
 
 var editTitle = document.querySelector('h1');
 
-listAll.addEventListener('click', function (event) {
-  if (event.target.matches('i')) {
+listAll.addEventListener('click', function editEntry(event) {
+  if (event.target.nodeName === 'I') {
     data.view = 'entry-edit';
     $entryForm.className = 'container';
     $entries.className = 'container hidden';
     editTitle.textContent = 'Edit Entry';
-    var editEntry = event.target.closest('li');
-    for (var i = 0; i < data.entries.length; i++) {
-      if (data.entries[i].title === editEntry.getAttribute('id')) {
-        data.editing = data.entries[i];
-        $title.value = data.editing.title;
-        $photo.value = data.editing.photo;
-        $notes.value = data.editing.notes;
-        $img.setAttribute('src', data.editing.photo);
-      }
-    }
+    var editList = event.target.closest('li');
+    data.editing = data.entries[data.entries.length - editList.getAttribute('entryid')];
+    $title.value = data.editing.title;
+    $photo.value = data.editing.photo;
+    $notes.value = data.editing.notes;
+    $img.setAttribute('src', data.editing.photo);
   }
 });
