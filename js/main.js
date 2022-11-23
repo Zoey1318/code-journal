@@ -110,8 +110,11 @@ function entryView() {
 
 $nav.addEventListener('click', entryView);
 
+var editTitle = document.querySelector('h1');
+
 $newbtn.addEventListener('click', function newform() {
   data.view = 'entry-form';
+  editTitle.textContent = 'New Entry';
   $entryForm.className = 'container';
   $entries.className = 'container hidden';
 });
@@ -127,8 +130,6 @@ if (data.view === 'entries') {
     $entryHistory.className = 'column-full hidden';
   }
 }
-
-var editTitle = document.querySelector('h1');
 
 listAll.addEventListener('click', function editEntry(event) {
   if (event.target.nodeName === 'I') {
