@@ -20,16 +20,15 @@ $formdata.addEventListener('submit', function (event) {
   inputobj.title = $title.value;
   inputobj.notes = $notes.value;
   inputobj.photo = $photo.value;
-  inputobj.entryID = data.nextEntryId;
-  var renderList = renderEntry(inputobj);
   if (data.view === 'entry-edit') {
     inputobj.entryID = data.editing.entryID;
     data.entries[data.entries.length - data.editing.entryID] = inputobj;
-    listChild[data.entries.length - data.editing.entryID].replaceWith(renderList);
+    listChild[data.entries.length - data.editing.entryID].replaceWith(renderEntry(inputobj));
   } else {
+    inputobj.entryID = data.nextEntryId;
     data.nextEntryId++;
     data.entries.unshift(inputobj);
-    listAll.prepend(renderList);
+    listAll.prepend(renderEntry(inputobj));
   }
   $img.setAttribute('src', './images/placeholder-image-square.jpg');
   entryView();
@@ -38,7 +37,7 @@ $formdata.addEventListener('submit', function (event) {
 
 function renderEntry(entryvalue) {
   var list = document.createElement('li');
-  list.setAttribute('entryid', entryvalue.entryID);
+  list.setAttribute('data-entryid', entryvalue.entryID);
 
   var rowList = document.createElement('div');
   rowList.setAttribute('class', 'row');
@@ -138,7 +137,7 @@ listAll.addEventListener('click', function editEntry(event) {
     $entries.className = 'container hidden';
     editTitle.textContent = 'Edit Entry';
     var editList = event.target.closest('li');
-    data.editing = data.entries[data.entries.length - editList.getAttribute('entryid')];
+    data.editing = data.entries[data.entries.length - editList.getAttribute('data-entryid')];
     $title.value = data.editing.title;
     $photo.value = data.editing.photo;
     $notes.value = data.editing.notes;
