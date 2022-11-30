@@ -52,11 +52,21 @@
             <label for="notes">Notes</label>
             <textarea id="notes" rows="10" required="required"></textarea>
           </div>
-          <div class="column-full">
+          <div class="column-half vis-hidden" id="delete-container">
+            <a class="deletebtn" href="#" data-view="delete-btn">Delete Entry</a>
+          </div>
+          <div class="column-half" id="save-container">
             <input type="submit" id="submitbtn" value="SAVE">
           </div>
         </div>
       </form>
+    </div>
+    <div class="delete-modal">
+      <div class="modal-content">
+        <p class="deleteask">Are you sure you want to delete this entry&#63;</p>
+        <button class="cancelbtn">CANCEL</button>
+        <button class="confirmbtn">CONFIRM</button>
+      </div>
     </div>
 
     <div class="container hidden" data-view="entries">
