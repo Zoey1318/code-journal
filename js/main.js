@@ -22,8 +22,12 @@ $formdata.addEventListener('submit', function (event) {
   inputobj.photo = $photo.value;
   if (data.view === 'entry-edit') {
     inputobj.entryID = data.editing.entryID;
-    data.entries[data.entries.length - data.editing.entryID] = inputobj;
-    listChild[data.entries.length - data.editing.entryID].replaceWith(renderEntry(inputobj));
+    for (var i = 0; i < data.entries.length; i++) {
+      if (data.entries[i].entryID === data.editing.entryID) {
+        data.entries[i] = inputobj;
+        listChild[i].replaceWith(renderEntry(inputobj));
+      }
+    }
   } else {
     inputobj.entryID = data.nextEntryId;
     data.nextEntryId++;
@@ -139,7 +143,8 @@ listAll.addEventListener('click', function editEntry(event) {
     $entries.className = 'container hidden';
     editTitle.textContent = 'Edit Entry';
     var editList = event.target.closest('li');
-    data.editing = data.entries[data.entries.length - editList.getAttribute('data-entryid')];
+    var dataEditIndex = data.entries.findIndex(data => data.entryID === parseInt(editList.getAttribute('data-entryid')));
+    data.editing = data.entries[dataEditIndex];
     $title.value = data.editing.title;
     $photo.value = data.editing.photo;
     $notes.value = data.editing.notes;
@@ -160,9 +165,12 @@ cancelBtn.addEventListener('click', deleteBox);
 var confirmBtn = document.getElementsByClassName('confirmbtn')[0];
 function deleteEntry(event) {
   deleteBox();
-  data.entries.splice(data.entries.length - data.editing.entryID, 1);
-  var deleteDom = listChild[listAll.children.length - data.editing.entryID];
-  deleteDom.remove();
+  for (var i = 0; i < data.entries.length; i++) {
+    if (data.entries[i].entryID === data.editing.entryID) {
+      data.entries.splice(i, 1);
+      listChild[i].remove();
+    }
+  }
   entryView();
 
 }
