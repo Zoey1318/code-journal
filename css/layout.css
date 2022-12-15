@@ -12,6 +12,10 @@ header {
   display: none !important;
 }
 
+.vis-hidden {
+  visibility: hidden;
+}
+
 .nav {
   display: flex;
   align-items: baseline;
@@ -89,12 +93,28 @@ label {
   font-weight: bold;
 }
 
-.column-full > #submitbtn {
+#delete-container,
+#save-container {
+  width: 50%;
+}
+
+#delete-container {
+  margin-top: 2rem;
+}
+
+#save-container {
+  margin-top: 0.8rem;
+}
+
+.column-half > .deletebtn {
+  color: red;
+}
+
+.column-half > #submitbtn {
   background-color: rgb(110, 0, 149);
   color: white;
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  margin-top: 1rem;
   width: 80px;
   float: right;
 }
@@ -151,6 +171,66 @@ ul {
   padding: 0;
 }
 
+.delete-modal {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 80%);
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+}
+
+.delete-modal.show {
+  visibility: visible;
+}
+
+.modal-content {
+  width: 340px;
+  height: 135px;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.deleteask {
+  width: 100%;
+  position: relative;
+  top: 10%;
+  text-align: center;
+}
+
+.modalbtn {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.cancelbtn,
+.confirmbtn {
+  height: 35px;
+  border-radius: 5px;
+  border-style: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.cancelbtn {
+  width: 85px;
+  background-color: rgb(188, 188, 188);
+}
+
+.confirmbtn {
+  width: 95px;
+  background-color: rgb(255, 0, 0);
+  color: white;
+}
+
 @media screen and (max-width: 767px) {
   .image-upload {
     height: 240px;
@@ -181,5 +261,9 @@ ul {
 
   li {
     margin-bottom: 1rem;
+  }
+
+  .modal-content {
+    left: 40%;
   }
 }

@@ -22,8 +22,12 @@ $formdata.addEventListener('submit', function (event) {
   inputobj.photo = $photo.value;
   if (data.view === 'entry-edit') {
     inputobj.entryID = data.editing.entryID;
-    data.entries[data.entries.length - data.editing.entryID] = inputobj;
-    listChild[data.entries.length - data.editing.entryID].replaceWith(renderEntry(inputobj));
+    for (var i = 0; i < data.entries.length; i++) {
+      if (data.entries[i].entryID === data.editing.entryID) {
+        data.entries[i] = inputobj;
+        listChild[i].replaceWith(renderEntry(inputobj));
+      }
+    }
   } else {
     inputobj.entryID = data.nextEntryId;
     data.nextEntryId++;
@@ -116,6 +120,7 @@ $newbtn.addEventListener('click', function newform() {
   editTitle.textContent = 'New Entry';
   $entryForm.className = 'container';
   $entries.className = 'container hidden';
+  deleteContainer.className = 'column-half vis-hidden';
 });
 
 if (data.view === 'entries') {
@@ -130,6 +135,7 @@ if (data.view === 'entries') {
   }
 }
 
+var deleteContainer = document.getElementById('delete-container');
 listAll.addEventListener('click', function editEntry(event) {
   if (event.target.nodeName === 'I') {
     data.view = 'entry-edit';
@@ -137,10 +143,35 @@ listAll.addEventListener('click', function editEntry(event) {
     $entries.className = 'container hidden';
     editTitle.textContent = 'Edit Entry';
     var editList = event.target.closest('li');
-    data.editing = data.entries[data.entries.length - editList.getAttribute('data-entryid')];
+    var dataEditIndex = data.entries.findIndex(data => data.entryID === parseInt(editList.getAttribute('data-entryid')));
+    data.editing = data.entries[dataEditIndex];
     $title.value = data.editing.title;
     $photo.value = data.editing.photo;
     $notes.value = data.editing.notes;
     $img.setAttribute('src', data.editing.photo);
+    deleteContainer.className = 'column-half';
   }
 });
+
+var deleteBtn = document.getElementsByClassName('deletebtn')[0];
+var $deleteEntryform = document.getElementsByClassName('delete-modal')[0];
+var cancelBtn = document.getElementsByClassName('cancelbtn')[0];
+function deleteBox(event) {
+  $deleteEntryform.classList.toggle('show');
+}
+deleteBtn.addEventListener('click', deleteBox);
+cancelBtn.addEventListener('click', deleteBox);
+
+var confirmBtn = document.getElementsByClassName('confirmbtn')[0];
+function deleteEntry(event) {
+  deleteBox();
+  for (var i = 0; i < data.entries.length; i++) {
+    if (data.entries[i].entryID === data.editing.entryID) {
+      data.entries.splice(i, 1);
+      listChild[i].remove();
+    }
+  }
+  entryView();
+
+}
+confirmBtn.addEventListener('click', deleteEntry);
